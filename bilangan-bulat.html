@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Petualangan Bilangan Bulat</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f4f6ff;--card:#fff;--tx:#1c2140;--mut:#5b6190;--pri:#5b4bff;--pri2:#ff5ca8;--ok:#14a86b;--bad:#e5384f;--line:#dfe3fa;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12142b;--card:#1c2040;--tx:#eef0ff;--mut:#a3a9d6;--pri:#8f84ff;--pri2:#ff7cb9;--ok:#3ed598;--bad:#ff6b7f;--line:#2f3566;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12142b;--card:#1c2040;--tx:#eef0ff;--mut:#a3a9d6;--pri:#8f84ff;--pri2:#ff7cb9;--ok:#3ed598;--bad:#ff6b7f;--line:#2f3566;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+header{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;padding:28px 18px 22px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(1.5rem,5vw,2.3rem)}
+header p{margin:0;opacity:.92}
+nav{display:flex;gap:8px;overflow-x:auto;padding:12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;justify-content:center;flex-wrap:wrap}
+nav button{border:2px solid var(--line);background:var(--card);color:var(--tx);padding:9px 15px;border-radius:999px;font-weight:700;cursor:pointer;font-size:.95rem}
+nav button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+main{max-width:820px;margin:0 auto;padding:6px 14px 50px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 4px 14px rgba(60,60,140,.08)}
+h2{margin:6px 0 4px}h3{margin:0 0 8px;color:var(--pri)}
+.big{font-size:1.5rem;font-weight:800}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:12px;padding:10px 18px;font-weight:700;cursor:pointer;font-size:1rem}
+.btn.alt{background:var(--card);color:var(--tx);border:2px solid var(--line)}
+input[type=text]{border:2px solid var(--line);background:var(--bg);color:var(--tx);border-radius:12px;padding:10px 12px;font-size:1.1rem;width:130px}
+table{border-collapse:collapse;margin:8px 0}td,th{border:1px solid var(--line);padding:6px 14px;text-align:center}
+.fb{margin-top:10px;font-weight:700}.ok{color:var(--ok)}.bad{color:var(--bad)}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;background:var(--bg)}
+summary{cursor:pointer;font-weight:700}
+.nl{overflow-x:auto}
+.opt{display:block;width:100%;text-align:left;margin:7px 0;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--tx);font-size:1rem;cursor:pointer}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 20%,var(--bg))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 20%,var(--bg))}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--pri2));width:0;transition:width .2s}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0}
+.cell{padding:12px 0;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--tx);font-weight:800;font-size:1.05rem;cursor:pointer}
+.cell.neg{color:var(--bad)}.cell.pos{color:var(--ok)}
+.cell.hit{background:var(--ok);color:#fff;border-color:var(--ok)}.cell.miss{background:var(--bad);color:#fff;border-color:var(--bad)}
+.hud{display:flex;justify-content:space-between;font-weight:800;flex-wrap:wrap;gap:6px}
+.q{font-size:1.35rem;font-weight:800;text-align:center;margin:12px 0}
+</style>
+</head>
+<body>
+<header><h1>🧮 Petualangan Bilangan Bulat</h1><p>Belajar, berlatih, dan taklukkan garis bilangan!</p></header>
+<nav id="nav"></nav>
+<main>
+
+<section id="materi" class="on">
+<div class="card"><h3>1. Apa itu bilangan bulat?</h3>
+<p>Bilangan bulat adalah bilangan yang terdiri dari <b>bilangan negatif</b>, <b>nol</b>, dan <b>bilangan positif</b>: …, −3, −2, −1, 0, 1, 2, 3, … Bilangan ini tidak mengandung pecahan atau desimal.</p>
+<p>Contoh di kehidupan nyata: suhu −5 °C, lantai basement −2, saldo utang −10.000, ketinggian 30 m di atas laut.</p></div>
+
+<div class="card"><h3>2. Garis bilangan</h3>
+<p>Semakin ke kanan nilainya semakin besar. Ketuk sebuah angka untuk melihat posisinya.</p>
+<div class="nl" id="nl"></div><div class="fb" id="nlInfo">Ketuk sebuah angka.</div></div>
+
+<div class="card"><h3>3. Membandingkan &amp; nilai mutlak</h3>
+<p>Bilangan yang lebih ke kanan selalu lebih besar. Jadi −2 &gt; −7 dan 0 &gt; −1.</p>
+<p><b>Nilai mutlak</b> adalah jarak suatu bilangan ke nol, selalu positif. |−6| = 6 dan |4| = 4.</p></div>
+
+<div class="card"><h3>4. Penjumlahan &amp; pengurangan</h3>
+<p>• Tambah bilangan positif: geser ke <b>kanan</b>.<br>• Tambah bilangan negatif: geser ke <b>kiri</b>.<br>• Kurang bilangan positif: geser ke kiri.<br>• Kurang bilangan negatif sama dengan tambah positif: a − (−b) = a + b.</p>
+<p>Contoh: 3 + (−5) = −2 dan 4 − (−2) = 6.</p></div>
+
+<div class="card"><h3>5. Perkalian &amp; pembagian</h3>
+<p>Aturan tandanya sama untuk kali dan bagi:</p>
+<table><tr><th>Tanda</th><th>Hasil</th></tr><tr><td>(+) × (+)</td><td>+</td></tr><tr><td>(−) × (−)</td><td>+</td></tr><tr><td>(+) × (−)</td><td>−</td></tr><tr><td>(−) × (+)</td><td>−</td></tr></table>
+<p>Tanda sama menghasilkan positif, tanda beda menghasilkan negatif. Pembagian dengan 0 tidak didefinisikan.</p></div>
+</section>
+
+<section id="contoh">
+<h2>📘 Contoh Soal</h2><p>Ketuk soal untuk melihat langkah penyelesaiannya.</p>
+<details><summary>Soal 1: Hitung −8 + 12</summary><p>Mulai dari −8, geser 12 langkah ke kanan. Hasilnya <b>4</b>.</p></details>
+<details><summary>Soal 2: Hitung 5 − (−7)</summary><p>Mengurangi bilangan negatif sama dengan menambah. 5 + 7 = <b>12</b>.</p></details>
+<details><summary>Soal 3: Hitung (−6) × 4</summary><p>Tanda beda, hasil negatif. 6 × 4 = 24, jadi <b>−24</b>.</p></details>
+<details><summary>Soal 4: Hitung (−36) ÷ (−9)</summary><p>Tanda sama, hasil positif. 36 ÷ 9 = <b>4</b>.</p></details>
+<details><summary>Soal 5: Suhu di puncak gunung −3 °C. Malam hari turun 5 °C. Berapa suhunya?</summary><p>−3 − 5 = <b>−8 °C</b>.</p></details>
+<details><summary>Soal 6: Urutkan dari terkecil: 3, −5, 0, −1, 7</summary><p>Yang paling kiri di garis bilangan paling kecil: <b>−5, −1, 0, 3, 7</b>.</p></details>
+</section>
+
+<section id="latihan">
+<h2>✏️ Latihan Soal</h2>
+<div class="card">
+<div class="row" id="lvl"></div>
+<div class="q" id="pq"></div>
+<div class="row" style="justify-content:center"><input type="text" id="pa" placeholder="Jawabanmu" autocomplete="off"><button class="btn" id="pc">Periksa</button><button class="btn alt" id="pn">Soal baru</button></div>
+<div class="fb" id="pf"></div>
+<p style="color:var(--mut)">Benar: <b id="pok">0</b> · Beruntun: <b id="pst">0</b> 🔥 · Tips: ketik tanda minus dengan tanda hubung (-).</p>
+</div></section>
+
+<section id="kuis">
+<h2>🎯 Kuis Seru</h2>
+<div class="card" id="kz"></div></section>
+
+<section id="game">
+<h2>🚀 Game: Misi Garis Bilangan</h2>
+<div class="card">
+<p>Roket mulai dari satu posisi lalu bergerak. Tap posisi pendaratan yang benar sebelum waktu habis! Semakin tinggi skor, semakin cepat waktunya.</p>
+<div class="hud"><span>⭐ Skor: <b id="gs">0</b></span><span>🏆 Terbaik: <b id="gb">0</b></span><span id="gl">❤️❤️❤️</span></div>
+<div class="bar" style="margin:8px 0"><i id="gt" style="width:100%"></i></div>
+<div class="q" id="gq">Siap?</div>
+<div class="grid" id="gg"></div>
+<div class="row" style="justify-content:center"><button class="btn" id="gstart">Mulai Game</button></div>
+<div class="fb" id="gf" style="text-align:center"></div>
+</div></section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const f=n=>n<0?"−"+Math.abs(n):String(n);
+const p=n=>n<0?"("+f(n)+")":String(n);
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+/* tabs */
+const tabs=[["materi","📚 Materi"],["contoh","📘 Contoh"],["latihan","✏️ Latihan"],["kuis","🎯 Kuis"],["game","🚀 Game"]];
+tabs.forEach(([id,t],i)=>{const b=document.createElement("button");b.textContent=t;if(!i)b.className="on";b.onclick=()=>{
+document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===id));
+[...$("nav").children].forEach(x=>x.classList.toggle("on",x===b));if(id==="game")stopGame();window.scrollTo(0,0)};$("nav").appendChild(b)});
+/* garis bilangan */
+(function(){let s='<svg width="640" height="90" viewBox="0 0 640 90" style="min-width:560px"><line x1="10" y1="45" x2="630" y2="45" stroke="currentColor" stroke-width="3"/>';
+for(let i=-10;i<=10;i++){const x=320+i*29;s+=`<g style="cursor:pointer" onclick="nlShow(${i})"><line x1="${x}" y1="36" x2="${x}" y2="54" stroke="currentColor" stroke-width="2"/><circle id="d${i}" cx="${x}" cy="45" r="9" fill="transparent"/><text x="${x}" y="76" text-anchor="middle" font-size="13" font-weight="700" fill="${i<0?'#e5384f':i>0?'#14a86b':'currentColor'}">${f(i)}</text></g>`}
+$("nl").innerHTML=s+"</svg>"})();
+function nlShow(n){for(let i=-10;i<=10;i++)$("d"+i).setAttribute("fill",i===n?"#ff5ca8":"transparent");
+$("nlInfo").textContent=f(n)+(n<0?" adalah bilangan negatif, ":n>0?" adalah bilangan positif, ":" adalah nol, ")+"nilai mutlaknya "+Math.abs(n)+".";}
+/* latihan */
+let mode="add",ans=0,ok=0,st=0,done=false;
+const modes=[["add","Tambah/Kurang"],["mul","Kali/Bagi"],["mix","Campuran"]];
+modes.forEach(([m,t],i)=>{const b=document.createElement("button");b.className="btn"+(i?" alt":"");b.textContent=t;b.onclick=()=>{mode=m;[...$("lvl").children].forEach(x=>x.className="btn alt");b.className="btn";newQ()};$("lvl").appendChild(b)});
+function newQ(){done=false;$("pf").textContent="";$("pa").value="";let m=mode==="mix"?(Math.random()<.5?"add":"mul"):mode,a,b,t;
+if(m==="add"){a=R(-20,20);b=R(-20,20);if(Math.random()<.5){ans=a+b;$("pq").textContent=f(a)+" + "+p(b)+" = ?"}else{ans=a-b;$("pq").textContent=f(a)+" − "+p(b)+" = ?"}}
+else{if(Math.random()<.5){a=R(-9,9);b=R(-9,9);ans=a*b;$("pq").textContent=p(a)+" × "+p(b)+" = ?"}else{b=R(-9,9)||3;const q=R(-9,9);a=q*b;ans=q;$("pq").textContent=p(a)+" ÷ "+p(b)+" = ?"}}}
+function check(){if(done)return;const v=parseInt($("pa").value.replace(/[−–]/g,"-").trim(),10);if(isNaN(v)){$("pf").textContent="Isi jawaban dulu ya.";$("pf").className="fb";return}
+done=true;if(v===ans){ok++;st++;$("pf").className="fb ok";$("pf").textContent="✅ Benar! Hebat!"}else{st=0;$("pf").className="fb bad";$("pf").textContent="❌ Belum tepat. Jawaban yang benar: "+f(ans)+". Coba ingat aturan tanda dan garis bilangan."}
+$("pok").textContent=ok;$("pst").textContent=st}
+$("pc").onclick=check;$("pn").onclick=newQ;$("pa").addEventListener("keydown",e=>{if(e.key==="Enter")done?newQ():check()});newQ();
+/* kuis */
+const QS=[
+["Manakah bilangan terkecil?",["−2","−9","0","3"],1,"−9 paling kiri di garis bilangan."],
+["Hasil dari −7 + 10 adalah …",["−17","3","17","−3"],1,"Mulai di −7, geser 10 ke kanan, sampai 3."],
+["Hasil dari 6 − (−4) adalah …",["2","−2","10","−10"],2,"6 − (−4) = 6 + 4 = 10."],
+["Hasil dari (−5) × (−3) adalah …",["−15","15","−8","8"],1,"Negatif kali negatif hasilnya positif."],
+["Hasil dari 24 ÷ (−6) adalah …",["4","−4","18","−18"],1,"Tanda beda, hasil negatif: −4."],
+["Nilai |−12| adalah …",["−12","0","12","24"],2,"Nilai mutlak adalah jarak ke nol, jadi 12."],
+["Suhu −4 °C naik 9 °C. Suhu sekarang …",["5 °C","−5 °C","13 °C","−13 °C"],0,"−4 + 9 = 5."],
+["Urutan naik yang benar adalah …",["−1, −3, 0, 2","−3, −1, 0, 2","0, −1, −3, 2","2, 0, −1, −3"],1,"Dari paling kiri ke kanan: −3, −1, 0, 2."]];
+let qi=0,qs=0;
+function showQ(){const c=$("kz");if(qi>=QS.length){const m=qs>=7?"🏆 Luar biasa, kamu jagoan bilangan bulat!":qs>=5?"👍 Bagus! Sedikit lagi sempurna.":"💪 Ayo pelajari materi lagi lalu coba ulang.";
+c.innerHTML=`<div class="big">Skor: ${qs} / ${QS.length}</div><p>${m}</p><button class="btn" onclick="qi=0;qs=0;showQ()">Ulangi Kuis</button>`;return}
+const q=QS[qi];c.innerHTML=`<div class="bar"><i style="width:${qi/QS.length*100}%"></i></div><p style="color:var(--mut)">Soal ${qi+1} dari ${QS.length} · Skor ${qs}</p><div class="big" style="font-size:1.2rem">${q[0]}</div>`+q[1].map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("")+`<div class="fb" id="qf"></div>`;
+let lock=false;c.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const i=+b.dataset.i;
+c.querySelectorAll(".opt")[q[2]].classList.add("right");if(i===q[2]){qs++;$("qf").className="fb ok";$("qf").textContent="✅ Benar! "+q[3]}else{b.classList.add("wrong");$("qf").className="fb bad";$("qf").textContent="❌ "+q[3]}
+$("qf").insertAdjacentHTML("afterend",`<button class="btn" style="margin-top:10px" id="qn">${qi===QS.length-1?"Lihat hasil":"Lanjut →"}</button>`);$("qn").onclick=()=>{qi++;showQ()}})}
+showQ();
+/* game */
+let gsc=0,best=0,lives=3,tm=null,tl=0,tmax=9,gans=null,play=false;
+const gg=$("gg");for(let i=-10;i<=10;i++){const b=document.createElement("button");b.className="cell "+(i<0?"neg":i>0?"pos":"");b.textContent=f(i);b.onclick=()=>pick(i,b);gg.appendChild(b)}
+function hearts(){$("gl").textContent="❤️".repeat(lives)+"🖤".repeat(3-lives)}
+function stopGame(){clearInterval(tm);play=false}
+function nextRound(){[...gg.children].forEach(c=>c.classList.remove("hit","miss"));let a,b;
+do{a=R(-8,8);b=R(-9,9)}while(Math.abs(a+b)>10||b===0);gans=a+b;
+$("gq").textContent="🚀 Mulai di "+f(a)+", lalu "+(b<0?"gerak "+f(-b)+" ke kiri":"gerak "+b+" ke kanan");
+tmax=Math.max(3.5,9-gsc/60);tl=tmax;clearInterval(tm);tm=setInterval(()=>{tl-=.1;$("gt").style.width=Math.max(0,tl/tmax*100)+"%";if(tl<=0){clearInterval(tm);lose("⏰ Waktu habis! Jawabannya "+f(gans))}},100)}
+function lose(msg){lives--;hearts();$("gf").className="fb bad";$("gf").textContent=msg;gg.children[gans+10].classList.add("hit");
+if(lives<=0){end()}else{play=false;setTimeout(()=>{play=true;nextRound()},1300)}}
+function end(){stopGame();if(gsc>best)best=gsc;$("gb").textContent=best;$("gq").textContent="Game selesai! Skor akhir: "+gsc;$("gstart").textContent="Main Lagi";$("gstart").style.display=""}
+function pick(i,b){if(!play)return;clearInterval(tm);play=false;
+if(i===gans){gsc+=10+Math.ceil(tl);$("gs").textContent=gsc;b.classList.add("hit");$("gf").className="fb ok";$("gf").textContent="✅ Tepat! Bonus kecepatan +"+Math.ceil(tl);setTimeout(()=>{play=true;nextRound()},800)}
+else{b.classList.add("miss");lose("❌ Salah! Jawaban yang benar: "+f(gans))}}
+$("gstart").onclick=()=>{gsc=0;lives=3;$("gs").textContent=0;hearts();$("gf").textContent="";$("gstart").style.display="none";play=true;nextRound()};
+hearts();
+</script>
+</body>
+</html>
